@@ -1,0 +1,29 @@
+# Documentos del TP que no se versionan
+AGENTS.md
+TP3-2026.md
+
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Registros y temporales
+logs/
+*.log
+npm-debug.log*
+dist/
+build/
+coverage/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
