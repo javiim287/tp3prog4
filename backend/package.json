@@ -1,0 +1,17 @@
+{
+  "name": "tp3-backend",
+  "version": "1.0.0",
+  "description": "Backend del TP3 - gestión de vehículos, conductores y viajes (Express.js + MySQL)",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "db:init": "node db/init.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.24.6"
+  }
+}
