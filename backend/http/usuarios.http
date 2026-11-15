@@ -1,5 +1,8 @@
 // ============================================================================
 // Pruebas de la API de usuarios (VS Code REST Client o similar)
+// Módulo 5: el login devuelve un JWT (expira a las 4 h). Copiar el valor de
+// "token" de la respuesta y pegarlo en la variable @token de vehiculos.http,
+// conductores.http y viajes.http para probar las rutas protegidas.
 // ============================================================================
 
 @host = http://localhost:3000
@@ -83,3 +86,30 @@ Content-Type: application/json
   "email": "mal@test",
   "contrasena": "clave1234"
 }
+
+// ---------------------------------------------------------------------------
+// Casos de autenticación con JWT (Módulo 5)
+// ---------------------------------------------------------------------------
+
+// Registro y login siguen siendo públicos: el resto de la API (/api/vehiculos,
+// /api/conductores, /api/viajes) exige la cabecera "Authorization: Bearer <token>".
+
+### El login devuelve el token JWT y su expiración (4 h)
+POST {{host}}/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "prueba@tp3.com",
+  "contrasena": "clave1234"
+}
+
+// La respuesta de registro/login nunca incluye la contraseña ni el hash:
+// solo id, nombre, email y (en login) el token firmado.
+
+### Reintentar login con token vencido en una ruta protegida (debe responder 401)
+// Un token de hace más de 4 h ya no sirve: la respuesta es 401 con el mensaje
+// "Token inválido o expirado. Iniciá sesión nuevamente." Probarlo con la
+// variable @token de vehiculos.http cuando el token expire.
+GET {{host}}/api/vehiculos
+Authorization: Bearer token-vencido-de-mas-de-4h
+

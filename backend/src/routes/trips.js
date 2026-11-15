@@ -3,6 +3,7 @@
 // pasan por su cadena de express-validator antes de llegar al controlador.
 const express = require('express');
 const controller = require('../controllers/tripController');
+const { requerirAuth } = require('../middleware/auth');
 const {
   validar,
   validarIdParam,
@@ -11,6 +12,9 @@ const {
 const tripValidators = require('../validators/tripValidators');
 
 const router = express.Router();
+
+// Todas las rutas de viajes requieren un JWT válido (Módulo 5)
+router.use(requerirAuth);
 
 // Las rutas de historial y kilómetros van antes que /:id para que no se
 // interpreten como un id de viaje.

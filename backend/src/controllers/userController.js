@@ -1,10 +1,11 @@
-// Controlador de usuarios: registro e inicio de sesión.
+// Controlador de usuarios: registro, inicio de sesión y emisión del JWT.
 // Las contraseñas se guardan SIEMPRE como hash de bcrypt y nunca se devuelven
-// ni se registran en logs. La emisión del JWT y el middleware de Passport se
-// implementan en el Módulo 5.
+// ni se registran en logs. El token se firma con HS256 y expira en 4 h
+// (JWT_EXPIRES_IN); las rutas CRUD se protegen con Passport JWT (Módulo 5).
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
 const { HttpError, asyncHandler } = require('../middleware/errorHandler');
+const { emitirToken } = require('../utils/jwt');
 
 const BCRYPT_ROUNDS = 10;
 
@@ -50,11 +51,20 @@ const iniciarSesion = asyncHandler(async (req, res) => {
     throw new HttpError(401, 'Credenciales inválidas.');
   }
 
-  // Nota: la emisión del JWT (4 h) se agrega en el Módulo 5.
+  // El cliente envía este token en "Authorization: Bearer <token>" para las
+  // rutas protegidas. Expira a las 4 h (verificada con prueba de token vencido).
+  const token = emitirToken(usuario);
+
   res.json({
     ok: true,
     mensaje: 'Inicio de sesión correcto.',
-    datos: { id: usuario.id, nombre: usuario.nombre, email: usuario.email },
+    datos: {
+      id: usuario.id,
+      nombre: usuario.nombre,
+      email: usuario.email,
+      token,
+      token_expira_en: process.env.JWT_EXPIRES_IN || '4h',
+    },
   });
 });
 

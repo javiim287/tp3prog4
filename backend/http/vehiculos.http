@@ -1,14 +1,23 @@
 // ============================================================================
 // Pruebas de la API de vehículos (VS Code REST Client o similar)
+// Módulo 5: todas las rutas de vehículos están protegidas con JWT.
+// 1) Ejecutar primero el login de usuarios.http y copiar el valor de "token".
+// 2) Pegarlo en @token (sin las comillas) para que todas las pruebas funcionen.
 // ============================================================================
 
 @host = http://localhost:3000
+@token = pegar_aqui_el_token_de_login
+
+### Listar vehículos SIN token (debe responder 401)
+GET {{host}}/api/vehiculos
 
 ### Listar vehículos
 GET {{host}}/api/vehiculos
+Authorization: Bearer {{token}}
 
 ### Crear vehículo (201)
 POST {{host}}/api/vehiculos
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -21,12 +30,15 @@ Content-Type: application/json
 
 ### Obtener vehículo por id
 GET {{host}}/api/vehiculos/1
+Authorization: Bearer {{token}}
 
 ### Obtener vehículo inexistente (debe responder 404)
 GET {{host}}/api/vehiculos/9999
+Authorization: Bearer {{token}}
 
 ### Crear vehículo con campos faltantes (debe responder 400)
 POST {{host}}/api/vehiculos
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -35,6 +47,7 @@ Content-Type: application/json
 
 ### Crear vehículo con año inválido (debe responder 400)
 POST {{host}}/api/vehiculos
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -47,6 +60,7 @@ Content-Type: application/json
 
 ### Crear vehículo con patente duplicada (debe responder 409)
 POST {{host}}/api/vehiculos
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -59,6 +73,7 @@ Content-Type: application/json
 
 ### Actualizar vehículo (200)
 PUT {{host}}/api/vehiculos/1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -71,6 +86,7 @@ Content-Type: application/json
 
 ### Actualizar vehículo inexistente (debe responder 404)
 PUT {{host}}/api/vehiculos/9999
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -83,9 +99,11 @@ Content-Type: application/json
 
 ### Eliminar vehículo (usar un id sin viajes asociados; 200)
 DELETE {{host}}/api/vehiculos/1
+Authorization: Bearer {{token}}
 
 ### Eliminar vehículo con viajes asociados (debe responder 409)
 DELETE {{host}}/api/vehiculos/1
+Authorization: Bearer {{token}}
 
 // ---------------------------------------------------------------------------
 // Casos de validación con express-validator (Módulo 4)
@@ -93,9 +111,11 @@ DELETE {{host}}/api/vehiculos/1
 
 ### Obtener vehículo con id no numérico (debe responder 400)
 GET {{host}}/api/vehiculos/abc
+Authorization: Bearer {{token}}
 
 ### Crear vehículo con patente de formato inválido (debe responder 400)
 POST {{host}}/api/vehiculos
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -108,6 +128,7 @@ Content-Type: application/json
 
 ### Crear vehículo con capacidad de carga negativa (debe responder 400)
 POST {{host}}/api/vehiculos
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -117,3 +138,11 @@ Content-Type: application/json
   "anio": 2021,
   "capacidad_carga": -10
 }
+
+// ---------------------------------------------------------------------------
+// Casos de autenticación (Módulo 5)
+// ---------------------------------------------------------------------------
+
+### Listar vehículos con token inválido (debe responder 401)
+GET {{host}}/api/vehiculos
+Authorization: Bearer token-falso-o-vencido

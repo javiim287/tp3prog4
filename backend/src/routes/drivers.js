@@ -3,10 +3,14 @@
 // cadena de express-validator antes de llegar al controlador.
 const express = require('express');
 const controller = require('../controllers/driverController');
+const { requerirAuth } = require('../middleware/auth');
 const { validar, validarIdParam } = require('../validators/helpers');
 const driverValidators = require('../validators/driverValidators');
 
 const router = express.Router();
+
+// Todas las rutas de conductores requieren un JWT válido (Módulo 5)
+router.use(requerirAuth);
 
 router.get('/', controller.listar); // listar todos
 router.get('/:id', validarIdParam('id'), validar, controller.obtener); // obtener por id

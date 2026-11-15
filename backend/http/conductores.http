@@ -1,14 +1,23 @@
 // ============================================================================
 // Pruebas de la API de conductores (VS Code REST Client o similar)
+// Módulo 5: todas las rutas de conductores están protegidas con JWT.
+// 1) Ejecutar primero el login de usuarios.http y copiar el valor de "token".
+// 2) Pegarlo en @token (sin las comillas) para que todas las pruebas funcionen.
 // ============================================================================
 
 @host = http://localhost:3000
+@token = pegar_aqui_el_token_de_login
+
+### Listar conductores SIN token (debe responder 401)
+GET {{host}}/api/conductores
 
 ### Listar conductores
 GET {{host}}/api/conductores
+Authorization: Bearer {{token}}
 
 ### Crear conductor (201)
 POST {{host}}/api/conductores
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -22,12 +31,15 @@ Content-Type: application/json
 
 ### Obtener conductor por id
 GET {{host}}/api/conductores/1
+Authorization: Bearer {{token}}
 
 ### Obtener conductor inexistente (debe responder 404)
 GET {{host}}/api/conductores/9999
+Authorization: Bearer {{token}}
 
 ### Crear conductor con campos faltantes (debe responder 400)
 POST {{host}}/api/conductores
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -37,6 +49,7 @@ Content-Type: application/json
 
 ### Crear conductor con vencimiento anterior al alta (debe responder 400)
 POST {{host}}/api/conductores
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -50,6 +63,7 @@ Content-Type: application/json
 
 ### Crear conductor con documento duplicado (debe responder 409)
 POST {{host}}/api/conductores
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -63,6 +77,7 @@ Content-Type: application/json
 
 ### Actualizar conductor (200)
 PUT {{host}}/api/conductores/1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -76,6 +91,7 @@ Content-Type: application/json
 
 ### Actualizar conductor inexistente (debe responder 404)
 PUT {{host}}/api/conductores/9999
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -89,9 +105,11 @@ Content-Type: application/json
 
 ### Eliminar conductor (usar un id sin viajes asociados; 200)
 DELETE {{host}}/api/conductores/1
+Authorization: Bearer {{token}}
 
 ### Eliminar conductor con viajes asociados (debe responder 409)
 DELETE {{host}}/api/conductores/1
+Authorization: Bearer {{token}}
 
 // ---------------------------------------------------------------------------
 // Casos de validación con express-validator (Módulo 4)
@@ -99,9 +117,11 @@ DELETE {{host}}/api/conductores/1
 
 ### Obtener conductor con id no numérico (debe responder 400)
 GET {{host}}/api/conductores/abc
+Authorization: Bearer {{token}}
 
 ### Crear conductor con documento con letras (debe responder 400)
 POST {{host}}/api/conductores
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -115,6 +135,7 @@ Content-Type: application/json
 
 ### Crear conductor con fecha de formato inválido (debe responder 400)
 POST {{host}}/api/conductores
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -125,3 +146,11 @@ Content-Type: application/json
   "fecha_alta_licencia": "15/03/2023",
   "fecha_vencimiento_licencia": "2028-03-15"
 }
+
+// ---------------------------------------------------------------------------
+// Casos de autenticación (Módulo 5)
+// ---------------------------------------------------------------------------
+
+### Listar conductores con token inválido (debe responder 401)
+GET {{host}}/api/conductores
+Authorization: Bearer token-falso-o-vencido

@@ -2,15 +2,24 @@
 // Pruebas de la API de viajes (VS Code REST Client o similar)
 // Requiere al menos un vehículo y un conductor creados (ver vehiculos.http
 // y conductores.http).
+// Módulo 5: todas las rutas de viajes están protegidas con JWT.
+// 1) Ejecutar primero el login de usuarios.http y copiar el valor de "token".
+// 2) Pegarlo en @token (sin las comillas) para que todas las pruebas funcionen.
 // ============================================================================
 
 @host = http://localhost:3000
+@token = pegar_aqui_el_token_de_login
+
+### Listar todos los viajes SIN token (debe responder 401)
+GET {{host}}/api/viajes
 
 ### Listar todos los viajes
 GET {{host}}/api/viajes
+Authorization: Bearer {{token}}
 
 ### Registrar viaje asociando un vehículo y un conductor (201)
 POST {{host}}/api/viajes
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -26,6 +35,7 @@ Content-Type: application/json
 
 ### Registrar viaje con vehículo inexistente (debe responder 400)
 POST {{host}}/api/viajes
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -40,6 +50,7 @@ Content-Type: application/json
 
 ### Registrar viaje con llegada anterior a la salida (debe responder 400)
 POST {{host}}/api/viajes
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -54,6 +65,7 @@ Content-Type: application/json
 
 ### Registrar viaje con kilómetros inválidos (debe responder 400)
 POST {{host}}/api/viajes
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -68,33 +80,43 @@ Content-Type: application/json
 
 ### Obtener viaje por id
 GET {{host}}/api/viajes/1
+Authorization: Bearer {{token}}
 
 ### Obtener viaje inexistente (debe responder 404)
 GET {{host}}/api/viajes/9999
+Authorization: Bearer {{token}}
 
 ### Historial de viajes por vehículo
 GET {{host}}/api/viajes/vehiculo/1
+Authorization: Bearer {{token}}
 
 ### Historial de un vehículo inexistente (debe responder 404)
 GET {{host}}/api/viajes/vehiculo/9999
+Authorization: Bearer {{token}}
 
 ### Historial de viajes por conductor
 GET {{host}}/api/viajes/conductor/1
+Authorization: Bearer {{token}}
 
 ### Historial de un conductor inexistente (debe responder 404)
 GET {{host}}/api/viajes/conductor/9999
+Authorization: Bearer {{token}}
 
 ### Resumen de kilómetros por vehículo y por conductor
 GET {{host}}/api/viajes/kilometros
+Authorization: Bearer {{token}}
 
 ### Kilómetros totales de un vehículo
 GET {{host}}/api/viajes/kilometros/vehiculo/1
+Authorization: Bearer {{token}}
 
 ### Kilómetros totales de un conductor
 GET {{host}}/api/viajes/kilometros/conductor/1
+Authorization: Bearer {{token}}
 
 ### Kilómetros de un vehículo inexistente (debe responder 404)
 GET {{host}}/api/viajes/kilometros/vehiculo/9999
+Authorization: Bearer {{token}}
 
 // ---------------------------------------------------------------------------
 // Casos de validación con express-validator (Módulo 4)
@@ -102,12 +124,15 @@ GET {{host}}/api/viajes/kilometros/vehiculo/9999
 
 ### Listar viajes con filtro vehiculoId no numérico (debe responder 400)
 GET {{host}}/api/viajes?vehiculoId=abc
+Authorization: Bearer {{token}}
 
 ### Historial con id de vehículo no numérico (debe responder 400)
 GET {{host}}/api/viajes/vehiculo/abc
+Authorization: Bearer {{token}}
 
 ### Registrar viaje con fecha de formato inválido (debe responder 400)
 POST {{host}}/api/viajes
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -119,3 +144,11 @@ Content-Type: application/json
   "destino": "Córdoba",
   "kilometros": 420.5
 }
+
+// ---------------------------------------------------------------------------
+// Casos de autenticación (Módulo 5)
+// ---------------------------------------------------------------------------
+
+### Listar viajes con token inválido (debe responder 401)
+GET {{host}}/api/viajes
+Authorization: Bearer token-falso-o-vencido

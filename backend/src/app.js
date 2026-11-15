@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const passport = require('./config/passport');
 const { verificarConexion } = require('./config/db');
 
 // App principal de Express. Las rutas de cada entidad se montan acá
@@ -10,6 +11,8 @@ const app = express();
 // Middleware de base
 app.use(cors());
 app.use(express.json());
+// Passport: habilita la estrategia JWT para las rutas protegidas (Módulo 5)
+app.use(passport.initialize());
 
 // Ruta de prueba: verifica que el backend está corriendo y que MySQL responde
 app.get('/api/health', async (_req, res) => {
