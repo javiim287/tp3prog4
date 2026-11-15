@@ -86,3 +86,34 @@ DELETE {{host}}/api/vehiculos/1
 
 ### Eliminar vehículo con viajes asociados (debe responder 409)
 DELETE {{host}}/api/vehiculos/1
+
+// ---------------------------------------------------------------------------
+// Casos de validación con express-validator (Módulo 4)
+// ---------------------------------------------------------------------------
+
+### Obtener vehículo con id no numérico (debe responder 400)
+GET {{host}}/api/vehiculos/abc
+
+### Crear vehículo con patente de formato inválido (debe responder 400)
+POST {{host}}/api/vehiculos
+Content-Type: application/json
+
+{
+  "marca": "Toyota",
+  "modelo": "Hilux",
+  "patente": "AB123",
+  "anio": 2021,
+  "capacidad_carga": 1000
+}
+
+### Crear vehículo con capacidad de carga negativa (debe responder 400)
+POST {{host}}/api/vehiculos
+Content-Type: application/json
+
+{
+  "marca": "Toyota",
+  "modelo": "Hilux",
+  "patente": "CD456EF",
+  "anio": 2021,
+  "capacidad_carga": -10
+}

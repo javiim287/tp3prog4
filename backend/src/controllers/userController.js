@@ -8,30 +8,8 @@ const { HttpError, asyncHandler } = require('../middleware/errorHandler');
 
 const BCRYPT_ROUNDS = 10;
 
-// Control básico de presencia y formato de email (Módulo 4/5 agrega más).
-function validarCamposBasicos(body, { requerirNombre = true } = {}) {
-  const requeridos = requerirNombre ? ['nombre', 'email'] : ['email'];
-  if (!requerirNombre) requeridos.push('contrasena');
-
-  const faltantes = requeridos.filter(
-    (campo) => body[campo] === undefined || body[campo] === null || body[campo] === ''
-  );
-  if (faltantes.length > 0) {
-    throw new HttpError(400, `Faltan campos obligatorios: ${faltantes.join(', ')}.`);
-  }
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) {
-    throw new HttpError(400, 'El email no tiene un formato válido.');
-  }
-
-  if (requerirNombre && String(body.contrasena).length < 8) {
-    throw new HttpError(400, 'La contraseña debe tener al menos 8 caracteres.');
-  }
-}
-
 // POST /api/usuarios/registro
 const registrar = asyncHandler(async (req, res) => {
-  validarCamposBasicos(req.body);
   const { nombre, email, contrasena } = req.body;
 
   // Control previo de email duplicado para dar un mensaje claro (409).
@@ -58,8 +36,6 @@ const registrar = asyncHandler(async (req, res) => {
 
 // POST /api/usuarios/login
 const iniciarSesion = asyncHandler(async (req, res) => {
-  // En el login el nombre no es obligatorio, solo email y contraseña.
-  validarCamposBasicos(req.body, { requerirNombre: false });
   const { email, contrasena } = req.body;
 
   const [cuentas] = await pool.query('SELECT * FROM usuario WHERE email = ?', [email]);

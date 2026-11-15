@@ -92,3 +92,36 @@ DELETE {{host}}/api/conductores/1
 
 ### Eliminar conductor con viajes asociados (debe responder 409)
 DELETE {{host}}/api/conductores/1
+
+// ---------------------------------------------------------------------------
+// Casos de validación con express-validator (Módulo 4)
+// ---------------------------------------------------------------------------
+
+### Obtener conductor con id no numérico (debe responder 400)
+GET {{host}}/api/conductores/abc
+
+### Crear conductor con documento con letras (debe responder 400)
+POST {{host}}/api/conductores
+Content-Type: application/json
+
+{
+  "nombre": "Ana",
+  "apellido": "Gómez",
+  "numero_documento": "30AB1234",
+  "numero_licencia": "LIC-1002",
+  "fecha_alta_licencia": "2023-03-15",
+  "fecha_vencimiento_licencia": "2028-03-15"
+}
+
+### Crear conductor con fecha de formato inválido (debe responder 400)
+POST {{host}}/api/conductores
+Content-Type: application/json
+
+{
+  "nombre": "Ana",
+  "apellido": "Gómez",
+  "numero_documento": "30998877",
+  "numero_licencia": "LIC-1002",
+  "fecha_alta_licencia": "15/03/2023",
+  "fecha_vencimiento_licencia": "2028-03-15"
+}

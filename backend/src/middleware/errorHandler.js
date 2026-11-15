@@ -1,6 +1,7 @@
 // Manejo central de errores: traduce los errores de la aplicación y de MySQL
 // a respuestas JSON consistentes con el código HTTP correspondiente.
-// (En el Módulo 4 se amplía junto con express-validator.)
+// Las validaciones de formato/rangos (express-validator) responden 400 desde
+// backend/src/validators/helpers.js antes de llegar a los controladores.
 
 // Error de aplicación con código HTTP asociado.
 // Los controladores lo lanzan (throw) y el middleware central lo convierte

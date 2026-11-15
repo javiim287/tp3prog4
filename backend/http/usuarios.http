@@ -70,3 +70,16 @@ Content-Type: application/json
   "email": "inexistente@tp3.com",
   "contrasena": "clave1234"
 }
+
+// ---------------------------------------------------------------------------
+// Casos de validación con express-validator (Módulo 4)
+// ---------------------------------------------------------------------------
+
+### Iniciar sesión con email de formato inválido (debe responder 400)
+POST {{host}}/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "mal@test",
+  "contrasena": "clave1234"
+}

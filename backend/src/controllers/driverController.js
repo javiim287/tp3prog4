@@ -1,37 +1,9 @@
 // Controlador de conductores: CRUD sobre la tabla conductor.
-// Las validaciones finas se completan con express-validator en el Módulo 4.
+// El formato y la coherencia de fechas se validan en las rutas con
+// express-validator (backend/src/validators/driverValidators.js); acá quedan
+// los controles que requieren consultar la base: unicidad y existencia.
 const pool = require('../config/db');
 const { HttpError, asyncHandler } = require('../middleware/errorHandler');
-
-// Campos obligatorios de la entidad conductor.
-const CAMPOS_REQUERIDOS = [
-  'nombre',
-  'apellido',
-  'numero_documento',
-  'numero_licencia',
-  'fecha_alta_licencia',
-  'fecha_vencimiento_licencia',
-];
-
-// Control básico de presencia y coherencia de fechas (Módulo 4 agrega formato).
-function validarCamposBasicos(body) {
-  const faltantes = CAMPOS_REQUERIDOS.filter(
-    (campo) => body[campo] === undefined || body[campo] === null || body[campo] === ''
-  );
-  if (faltantes.length > 0) {
-    throw new HttpError(400, `Faltan campos obligatorios: ${faltantes.join(', ')}.`);
-  }
-
-  const alta = new Date(body.fecha_alta_licencia);
-  const vencimiento = new Date(body.fecha_vencimiento_licencia);
-  const fechasValidas = !Number.isNaN(alta.getTime()) && !Number.isNaN(vencimiento.getTime());
-  if (!fechasValidas) {
-    throw new HttpError(400, 'Las fechas de la licencia deben tener formato YYYY-MM-DD.');
-  }
-  if (vencimiento < alta) {
-    throw new HttpError(400, 'La fecha de vencimiento de la licencia debe ser posterior o igual a la de alta.');
-  }
-}
 
 // GET /api/conductores
 const listar = asyncHandler(async (_req, res) => {
@@ -50,7 +22,6 @@ const obtener = asyncHandler(async (req, res) => {
 
 // POST /api/conductores
 const crear = asyncHandler(async (req, res) => {
-  validarCamposBasicos(req.body);
   const {
     nombre,
     apellido,
@@ -103,7 +74,6 @@ const actualizar = asyncHandler(async (req, res) => {
     throw new HttpError(404, 'Conductor no encontrado.');
   }
 
-  validarCamposBasicos(req.body);
   const {
     nombre,
     apellido,

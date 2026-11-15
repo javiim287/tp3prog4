@@ -1,44 +1,13 @@
 // Controlador de viajes: registro, listado, historial por vehículo/conductor
 // y cálculo de kilómetros totales por vehículo y por conductor.
-// Las validaciones finas se completan con express-validator en el Módulo 4.
+// El formato y la coherencia de datos se validan en las rutas con
+// express-validator (backend/src/validators/tripValidators.js); acá queda el
+// control que requiere consultar la base: vehículo y conductor existentes.
 const pool = require('../config/db');
 const { HttpError, asyncHandler } = require('../middleware/errorHandler');
 
-// Campos obligatorios de la entidad viaje (observaciones es opcional).
-const CAMPOS_REQUERIDOS = [
-  'vehiculo_id',
-  'conductor_id',
-  'fecha_salida',
-  'fecha_llegada',
-  'origen',
-  'destino',
-  'kilometros',
-];
-
-// Control básico de presencia, referencias y coherencia (Módulo 4 agrega más).
-async function validarCamposBasicos(body) {
-  const faltantes = CAMPOS_REQUERIDOS.filter(
-    (campo) => body[campo] === undefined || body[campo] === null || body[campo] === ''
-  );
-  if (faltantes.length > 0) {
-    throw new HttpError(400, `Faltan campos obligatorios: ${faltantes.join(', ')}.`);
-  }
-
-  const salida = new Date(body.fecha_salida);
-  const llegada = new Date(body.fecha_llegada);
-  if (Number.isNaN(salida.getTime()) || Number.isNaN(llegada.getTime())) {
-    throw new HttpError(400, 'Las fechas de salida y llegada deben tener formato YYYY-MM-DD HH:MM:SS.');
-  }
-  if (llegada < salida) {
-    throw new HttpError(400, 'La fecha de llegada debe ser posterior o igual a la de salida.');
-  }
-
-  const kilometros = Number(body.kilometros);
-  if (!Number.isFinite(kilometros) || kilometros <= 0) {
-    throw new HttpError(400, 'Los kilómetros deben ser un número mayor a 0.');
-  }
-
-  // El viaje debe asociar un vehículo y un conductor existentes (400 si no).
+// El viaje debe asociar un vehículo y un conductor existentes (400 si no).
+async function validarReferencias(body) {
   const [vehiculo] = await pool.query('SELECT id FROM vehiculo WHERE id = ?', [body.vehiculo_id]);
   if (vehiculo.length === 0) {
     throw new HttpError(400, `El vehículo ${body.vehiculo_id} no existe.`);
@@ -89,7 +58,7 @@ const obtener = asyncHandler(async (req, res) => {
 
 // POST /api/viajes: registra un viaje asociando un vehículo y un conductor.
 const crear = asyncHandler(async (req, res) => {
-  await validarCamposBasicos(req.body);
+  await validarReferencias(req.body);
   const {
     vehiculo_id,
     conductor_id,
