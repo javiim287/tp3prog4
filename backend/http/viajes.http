@@ -1,0 +1,97 @@
+// ============================================================================
+// Pruebas de la API de viajes (VS Code REST Client o similar)
+// Requiere al menos un vehículo y un conductor creados (ver vehiculos.http
+// y conductores.http).
+// ============================================================================
+
+@host = http://localhost:3000
+
+### Listar todos los viajes
+GET {{host}}/api/viajes
+
+### Registrar viaje asociando un vehículo y un conductor (201)
+POST {{host}}/api/viajes
+Content-Type: application/json
+
+{
+  "vehiculo_id": 1,
+  "conductor_id": 1,
+  "fecha_salida": "2026-11-10 08:00:00",
+  "fecha_llegada": "2026-11-10 18:30:00",
+  "origen": "La Rioja",
+  "destino": "Córdoba",
+  "kilometros": 420.5,
+  "observaciones": "Entrega de mercadería"
+}
+
+### Registrar viaje con vehículo inexistente (debe responder 400)
+POST {{host}}/api/viajes
+Content-Type: application/json
+
+{
+  "vehiculo_id": 9999,
+  "conductor_id": 1,
+  "fecha_salida": "2026-11-10 08:00:00",
+  "fecha_llegada": "2026-11-10 18:30:00",
+  "origen": "La Rioja",
+  "destino": "Córdoba",
+  "kilometros": 420.5
+}
+
+### Registrar viaje con llegada anterior a la salida (debe responder 400)
+POST {{host}}/api/viajes
+Content-Type: application/json
+
+{
+  "vehiculo_id": 1,
+  "conductor_id": 1,
+  "fecha_salida": "2026-11-10 08:00:00",
+  "fecha_llegada": "2026-11-09 18:30:00",
+  "origen": "La Rioja",
+  "destino": "Córdoba",
+  "kilometros": 420.5
+}
+
+### Registrar viaje con kilómetros inválidos (debe responder 400)
+POST {{host}}/api/viajes
+Content-Type: application/json
+
+{
+  "vehiculo_id": 1,
+  "conductor_id": 1,
+  "fecha_salida": "2026-11-10 08:00:00",
+  "fecha_llegada": "2026-11-10 18:30:00",
+  "origen": "La Rioja",
+  "destino": "Córdoba",
+  "kilometros": -5
+}
+
+### Obtener viaje por id
+GET {{host}}/api/viajes/1
+
+### Obtener viaje inexistente (debe responder 404)
+GET {{host}}/api/viajes/9999
+
+### Historial de viajes por vehículo
+GET {{host}}/api/viajes/vehiculo/1
+
+### Historial de un vehículo inexistente (debe responder 404)
+GET {{host}}/api/viajes/vehiculo/9999
+
+### Historial de viajes por conductor
+GET {{host}}/api/viajes/conductor/1
+
+### Historial de un conductor inexistente (debe responder 404)
+GET {{host}}/api/viajes/conductor/9999
+
+### Resumen de kilómetros por vehículo y por conductor
+GET {{host}}/api/viajes/kilometros
+
+### Kilómetros totales de un vehículo
+GET {{host}}/api/viajes/kilometros/vehiculo/1
+
+### Kilómetros totales de un conductor
+GET {{host}}/api/viajes/kilometros/conductor/1
+
+### Kilómetros de un vehículo inexistente (debe responder 404)
+GET {{host}}/api/viajes/kilometros/vehiculo/9999

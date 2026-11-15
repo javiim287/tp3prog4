@@ -1,0 +1,88 @@
+// ============================================================================
+// Pruebas de la API de vehículos (VS Code REST Client o similar)
+// ============================================================================
+
+@host = http://localhost:3000
+
+### Listar vehículos
+GET {{host}}/api/vehiculos
+
+### Crear vehículo (201)
+POST {{host}}/api/vehiculos
+Content-Type: application/json
+
+{
+  "marca": "Ford",
+  "modelo": "Ranger",
+  "patente": "AB123CD",
+  "anio": 2021,
+  "capacidad_carga": 1200.5
+}
+
+### Obtener vehículo por id
+GET {{host}}/api/vehiculos/1
+
+### Obtener vehículo inexistente (debe responder 404)
+GET {{host}}/api/vehiculos/9999
+
+### Crear vehículo con campos faltantes (debe responder 400)
+POST {{host}}/api/vehiculos
+Content-Type: application/json
+
+{
+  "marca": "Toyota"
+}
+
+### Crear vehículo con año inválido (debe responder 400)
+POST {{host}}/api/vehiculos
+Content-Type: application/json
+
+{
+  "marca": "Toyota",
+  "modelo": "Hilux",
+  "patente": "XY987ZA",
+  "anio": 1800,
+  "capacidad_carga": 1000
+}
+
+### Crear vehículo con patente duplicada (debe responder 409)
+POST {{host}}/api/vehiculos
+Content-Type: application/json
+
+{
+  "marca": "Toyota",
+  "modelo": "Hilux",
+  "patente": "AB123CD",
+  "anio": 2022,
+  "capacidad_carga": 1000
+}
+
+### Actualizar vehículo (200)
+PUT {{host}}/api/vehiculos/1
+Content-Type: application/json
+
+{
+  "marca": "Ford",
+  "modelo": "Ranger Limited",
+  "patente": "AB123CD",
+  "anio": 2021,
+  "capacidad_carga": 1300
+}
+
+### Actualizar vehículo inexistente (debe responder 404)
+PUT {{host}}/api/vehiculos/9999
+Content-Type: application/json
+
+{
+  "marca": "Ford",
+  "modelo": "Ranger",
+  "patente": "AB123CD",
+  "anio": 2021,
+  "capacidad_carga": 1300
+}
+
+### Eliminar vehículo (usar un id sin viajes asociados; 200)
+DELETE {{host}}/api/vehiculos/1
+
+### Eliminar vehículo con viajes asociados (debe responder 409)
+DELETE {{host}}/api/vehiculos/1

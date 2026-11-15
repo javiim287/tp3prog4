@@ -1,0 +1,72 @@
+// ============================================================================
+// Pruebas de la API de usuarios (VS Code REST Client o similar)
+// ============================================================================
+
+@host = http://localhost:3000
+
+### Registrar usuario (201)
+POST {{host}}/api/usuarios/registro
+Content-Type: application/json
+
+{
+  "nombre": "Usuario de Prueba",
+  "email": "prueba@tp3.com",
+  "contrasena": "clave1234"
+}
+
+### Registrar usuario con email duplicado (debe responder 409)
+POST {{host}}/api/usuarios/registro
+Content-Type: application/json
+
+{
+  "nombre": "Otro Usuario",
+  "email": "prueba@tp3.com",
+  "contrasena": "clave5678"
+}
+
+### Registrar usuario con contraseña corta (debe responder 400)
+POST {{host}}/api/usuarios/registro
+Content-Type: application/json
+
+{
+  "nombre": "Usuario de Prueba",
+  "email": "corta@tp3.com",
+  "contrasena": "123"
+}
+
+### Registrar usuario con email inválido (debe responder 400)
+POST {{host}}/api/usuarios/registro
+Content-Type: application/json
+
+{
+  "nombre": "Usuario de Prueba",
+  "email": "no-es-un-email",
+  "contrasena": "clave1234"
+}
+
+### Iniciar sesión con credenciales correctas (200)
+POST {{host}}/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "prueba@tp3.com",
+  "contrasena": "clave1234"
+}
+
+### Iniciar sesión con contraseña incorrecta (debe responder 401)
+POST {{host}}/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "prueba@tp3.com",
+  "contrasena": "clave-incorrecta"
+}
+
+### Iniciar sesión con email inexistente (debe responder 401)
+POST {{host}}/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "inexistente@tp3.com",
+  "contrasena": "clave1234"
+}

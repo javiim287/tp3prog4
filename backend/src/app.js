@@ -22,4 +22,16 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
+// Rutas de la API (una por entidad)
+app.use('/api/usuarios', require('./routes/users'));
+app.use('/api/vehiculos', require('./routes/vehicles'));
+app.use('/api/conductores', require('./routes/drivers'));
+app.use('/api/viajes', require('./routes/trips'));
+
+// 404 para rutas de la API que no existen
+app.use('/api', require('./middleware/errorHandler').notFoundHandler);
+
+// Manejo central de errores: responde JSON con el código HTTP correcto
+app.use(require('./middleware/errorHandler').errorHandler);
+
 module.exports = app;
