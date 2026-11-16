@@ -1,21 +1,12 @@
-// Validaciones de conductores (express-validator).
-// Alineadas con la tabla conductor (backend/db/tp3.sql):
-// nombre/apellido VARCHAR(100), documento y licencia VARCHAR(20) únicos,
-// fechas de licencia DATE con vencimiento >= alta.
 
 const { body } = require('express-validator');
 
-// DNI argentino y documentos similares: solo dígitos (6 a 20 por el VARCHAR).
 const DOCUMENTO_REGEX = /^[0-9]{6,20}$/;
 
-// Número de licencia: letras, dígitos, guiones y puntos (4 a 20 caracteres),
-// formato compatible con licencias del tipo "LIC-1001".
 const LICENCIA_REGEX = /^[A-Za-z0-9.-]{4,20}$/;
 
-// Solo letras (incluye acentos y ñ), espacios y guiones.
 const SOLO_LETRAS_REGEX = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' -]+$/;
 
-// Fecha en formato estricto YYYY-MM-DD (isISO8601 solo acepta { strict: true }).
 const FECHA_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 const esFechaISO = (valor) =>
@@ -52,7 +43,7 @@ const crearOActualizar = [
     .custom(esFechaISO).withMessage('La fecha de vencimiento debe tener el formato YYYY-MM-DD.')
     .custom((valor, { req }) => {
       if (!esFechaISO(req.body.fecha_alta_licencia) || !esFechaISO(valor)) {
-        return true; // el formato ya se reporta en su propio error
+        return true;
       }
       return new Date(`${valor}T00:00:00`) >= new Date(`${req.body.fecha_alta_licencia}T00:00:00`);
     })

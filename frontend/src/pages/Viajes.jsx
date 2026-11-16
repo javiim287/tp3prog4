@@ -1,6 +1,3 @@
-// Pantalla de viajes (Módulo 7): registro de viajes (vehículo + conductor),
-// listado general, historial consultable por vehículo o conductor y
-// kilómetros totales recorridos (resumen general y por entidad).
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { pedir } from '../api/client';
@@ -13,7 +10,7 @@ export default function Viajes() {
   const [viajes, setViajes] = useState([]);
   const [vehiculos, setVehiculos] = useState([]);
   const [conductores, setConductores] = useState([]);
-  const [resumen, setResumen] = useState(null); // { por_vehiculo, por_conductor }
+  const [resumen, setResumen] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   const [mensaje, setMensaje] = useState('');
@@ -33,7 +30,6 @@ export default function Viajes() {
       setViajes(rViajes.datos);
       setResumen(rResumen.datos);
     } catch (e) {
-      // Un 401 ya disparó la redirección al login desde el cliente de API.
       if (e.estado !== 401) setError('No se pudo cargar la información de viajes.');
     } finally {
       setCargando(false);
@@ -46,7 +42,7 @@ export default function Viajes() {
 
   function alRegistrar(mensaje) {
     setMensaje(mensaje);
-    cargar(); // refresca listado e historial/kilómetros tras el alta
+    cargar();
   }
 
   const inicialHistorial = {

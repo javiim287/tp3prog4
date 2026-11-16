@@ -1,6 +1,3 @@
-// Rutas CRUD de vehículos: /api/vehiculos
-// Cada ruta de obtención, creación, actualización y eliminación pasa por su
-// cadena de express-validator antes de llegar al controlador.
 const express = require('express');
 const controller = require('../controllers/vehicleController');
 const { requerirAuth } = require('../middleware/auth');
@@ -9,13 +6,12 @@ const vehicleValidators = require('../validators/vehicleValidators');
 
 const router = express.Router();
 
-// Todas las rutas de vehículos requieren un JWT válido (Módulo 5)
 router.use(requerirAuth);
 
-router.get('/', controller.listar); // listar todos
-router.get('/:id', validarIdParam('id'), validar, controller.obtener); // obtener por id
-router.post('/', vehicleValidators.crear, validar, controller.crear); // crear
-router.put('/:id', validarIdParam('id'), validar, vehicleValidators.actualizar, validar, controller.actualizar); // actualizar
-router.delete('/:id', validarIdParam('id'), validar, controller.eliminar); // eliminar
+router.get('/', controller.listar);
+router.get('/:id', validarIdParam('id'), validar, controller.obtener);
+router.post('/', vehicleValidators.crear, validar, controller.crear);
+router.put('/:id', validarIdParam('id'), validar, vehicleValidators.actualizar, validar, controller.actualizar);
+router.delete('/:id', validarIdParam('id'), validar, controller.eliminar);
 
 module.exports = router;

@@ -1,17 +1,11 @@
-// Controlador de conductores: CRUD sobre la tabla conductor.
-// El formato y la coherencia de fechas se validan en las rutas con
-// express-validator (backend/src/validators/driverValidators.js); acá quedan
-// los controles que requieren consultar la base: unicidad y existencia.
 const pool = require('../config/db');
 const { HttpError, asyncHandler } = require('../middleware/errorHandler');
 
-// GET /api/conductores
 const listar = asyncHandler(async (_req, res) => {
   const [filas] = await pool.query('SELECT * FROM conductor ORDER BY id');
   res.json({ ok: true, datos: filas });
 });
 
-// GET /api/conductores/:id
 const obtener = asyncHandler(async (req, res) => {
   const [filas] = await pool.query('SELECT * FROM conductor WHERE id = ?', [req.params.id]);
   if (filas.length === 0) {
@@ -20,7 +14,6 @@ const obtener = asyncHandler(async (req, res) => {
   res.json({ ok: true, datos: filas[0] });
 });
 
-// POST /api/conductores
 const crear = asyncHandler(async (req, res) => {
   const {
     nombre,
@@ -31,7 +24,6 @@ const crear = asyncHandler(async (req, res) => {
     fecha_vencimiento_licencia,
   } = req.body;
 
-  // Controles previos de unicidad para dar mensajes claros (409).
   const [docDuplicado] = await pool.query(
     'SELECT id FROM conductor WHERE numero_documento = ?',
     [numero_documento]
@@ -67,7 +59,6 @@ const crear = asyncHandler(async (req, res) => {
   res.status(201).json({ ok: true, mensaje: 'Conductor creado.', datos: creado[0] });
 });
 
-// PUT /api/conductores/:id
 const actualizar = asyncHandler(async (req, res) => {
   const [existentes] = await pool.query('SELECT id FROM conductor WHERE id = ?', [req.params.id]);
   if (existentes.length === 0) {
@@ -119,9 +110,6 @@ const actualizar = asyncHandler(async (req, res) => {
   res.json({ ok: true, mensaje: 'Conductor actualizado.', datos: actualizado[0] });
 });
 
-// DELETE /api/conductores/:id
-// Si el conductor tiene viajes asociados la FK (ON DELETE RESTRICT) lo impide
-// y el middleware central responde 409.
 const eliminar = asyncHandler(async (req, res) => {
   const [existentes] = await pool.query('SELECT id FROM conductor WHERE id = ?', [req.params.id]);
   if (existentes.length === 0) {

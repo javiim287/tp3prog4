@@ -1,9 +1,3 @@
-// Historial de viajes consultable por vehículo o por conductor (Módulo 7).
-// El usuario elige el tipo de entidad y la entidad concreta; se cargan sus
-// viajes (GET /viajes/vehiculo/:id o /viajes/conductor/:id) y, junto al
-// historial, los kilómetros totales (GET /viajes/kilometros/...).
-// Puede abrirse preseleccionado desde las pantallas de vehículos/conductores
-// con /viajes?historial=vehiculo&id=N.
 import { useEffect, useState } from 'react';
 import { pedir } from '../api/client';
 import { formatearFechaHora } from '../utils/validaciones';
@@ -13,8 +7,8 @@ const SIN_SELECCION = { tipo: 'vehiculo', id: '' };
 export default function HistorialViajes({ vehiculos, conductores, inicial = SIN_SELECCION }) {
   const [tipo, setTipo] = useState(inicial.tipo === 'conductor' ? 'conductor' : 'vehiculo');
   const [idEntidad, setIdEntidad] = useState(String(inicial.id || ''));
-  const [historial, setHistorial] = useState(null); // { entidad, viajes }
-  const [kilometros, setKilometros] = useState(null); // { kilometros_totales, cantidad_viajes }
+  const [historial, setHistorial] = useState(null);
+  const [kilometros, setKilometros] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState('');
 

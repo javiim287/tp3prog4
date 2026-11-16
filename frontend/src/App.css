@@ -1,6 +1,4 @@
-/* Estilos de la aplicación (CSS puro: navbar, páginas, tablas, formularios). */
 
-/* ---------- Estructura general ---------- */
 .app {
   display: flex;
   flex-direction: column;
@@ -44,7 +42,6 @@
   color: var(--color-texto-suave);
 }
 
-/* ---------- Navbar ---------- */
 .nav {
   background: var(--color-primario-oscuro);
   color: #fff;
@@ -105,7 +102,6 @@
   font-size: 0.95rem;
 }
 
-/* ---------- Botones y enlaces ---------- */
 .boton {
   display: inline-block;
   padding: 8px 16px;
@@ -157,7 +153,6 @@
   flex-wrap: wrap;
 }
 
-/* ---------- Página pública ---------- */
 .presentacion {
   background: var(--color-panel);
   border: 1px solid var(--color-borde);
@@ -201,7 +196,6 @@
   color: var(--color-texto-suave);
 }
 
-/* ---------- Panel de login ---------- */
 .panel {
   background: var(--color-panel);
   border: 1px solid var(--color-borde);
@@ -235,7 +229,6 @@
   color: var(--color-primario);
 }
 
-/* Pestañas login / registro */
 .pestana {
   display: flex;
   gap: 4px;
@@ -264,7 +257,6 @@
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
 }
 
-/* ---------- Formularios ---------- */
 .campo {
   display: flex;
   flex-direction: column;
@@ -297,7 +289,6 @@
   font-size: 0.85rem;
 }
 
-/* ---------- Avisos ---------- */
 .aviso {
   padding: 10px 14px;
   border-radius: var(--radio);
@@ -315,7 +306,6 @@
   color: var(--color-exito);
 }
 
-/* ---------- Tablas ---------- */
 .tabla {
   width: 100%;
   border-collapse: collapse;
@@ -346,7 +336,6 @@
   background: #fafbfe;
 }
 
-/* Tablas dentro de tarjetas (kilómetros por vehículo / conductor). */
 .tabla--chica {
   font-size: 0.9rem;
 }
@@ -356,7 +345,6 @@
   padding: 8px 10px;
 }
 
-/* ---------- Secciones de gestión (Módulo 7) ---------- */
 .seccion {
   display: flex;
   flex-direction: column;
@@ -374,7 +362,6 @@
   font-size: 0.95rem;
 }
 
-/* ---------- Formulario en grilla (varios campos por fila) ---------- */
 .formulario-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -407,7 +394,6 @@
   min-height: 70px;
 }
 
-/* Filtros de búsqueda (historial) alineados en una fila. */
 .filtros {
   display: flex;
   gap: 16px;
@@ -420,7 +406,6 @@
   min-width: 220px;
 }
 
-/* ---------- Acciones dentro de las tablas ---------- */
 .tabla__acciones {
   white-space: nowrap;
 }
@@ -444,7 +429,6 @@
   background: #7f1d1d;
 }
 
-/* ---------- Resumen del historial ---------- */
 .historial__resumen {
   margin: 0;
   padding: 10px 14px;

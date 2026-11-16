@@ -1,6 +1,3 @@
-// Página de inicio de sesión y registro de usuarios (formularios con dos modos).
-// Valida los campos en el frontend antes de enviar y muestra los mensajes de
-// error del backend (credenciales inválidas, email duplicado, etc.).
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -35,7 +32,6 @@ export default function Login() {
     setForm((previo) => ({ ...previo, [name]: value }));
   }
 
-  // Validaciones del frontend: campos obligatorios y formato de datos.
   function validar() {
     const nuevos = {};
 
@@ -108,7 +104,6 @@ export default function Login() {
             : 'Ingresá con tu cuenta para acceder a la gestión.'}
         </p>
 
-        {/* Modo con pestañas: iniciar sesión / crear cuenta */}
         <div className="pestana" role="tablist">
           <button
             type="button"

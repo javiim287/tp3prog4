@@ -1,6 +1,3 @@
-// Contexto de autenticación: guarda el usuario logueado, expone las funciones
-// de login / registro / salida y reacciona cuando la sesión expira (401)
-// limpiando el estado y redirigiendo al login.
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,8 +14,6 @@ export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(() => obtenerUsuarioGuardado());
   const navegar = useNavigate();
 
-  // Si cualquier pedido protegido recibe 401, la sesión ya no es válida:
-  // se limpia el estado y se vuelve al login.
   useEffect(() => {
     const alExpirar = () => {
       cerrarSesion();

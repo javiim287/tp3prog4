@@ -1,15 +1,8 @@
-// Validaciones de vehículos (express-validator).
-// Formatos y rangos alineados con la tabla vehiculo (backend/db/tp3.sql):
-// marca/modelo VARCHAR(50), patente VARCHAR(10), anio SMALLINT 1900-2100,
-// capacidad_carga DECIMAL(8,2) en kg.
 
 const { body } = require('express-validator');
 
-// Patentes argentinas: viejo formato ABC123 y nuevo formato AB123CD.
 const PATENTE_REGEX = /^([A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$/;
 
-// Cadena común para POST (crear) y PUT (actualizar): ambos reciben el objeto
-// completo de la entidad.
 const crearOActualizar = [
   body('marca')
     .trim()

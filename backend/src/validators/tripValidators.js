@@ -1,11 +1,6 @@
-// Validaciones de viajes (express-validator).
-// Alineadas con la tabla viaje (backend/db/tp3.sql):
-// fecha_salida/fecha_llegada DATETIME, origen/destino VARCHAR(150),
-// kilometros DECIMAL(10,2), observaciones TEXT opcional.
 
 const { body } = require('express-validator');
 
-// DATETIME en formato YYYY-MM-DD HH:MM:SS.
 const FECHA_REGEX = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 
 const esFechaValida = (valor) =>
@@ -34,7 +29,7 @@ const crear = [
     .withMessage('La fecha de llegada debe tener el formato YYYY-MM-DD HH:MM:SS.')
     .custom((valor, { req }) => {
       if (!esFechaValida(req.body.fecha_salida) || !esFechaValida(valor)) {
-        return true; // el formato ya se reporta en su propio error
+        return true;
       }
       return new Date(valor.replace(' ', 'T')) >= new Date(req.body.fecha_salida.replace(' ', 'T'));
     })

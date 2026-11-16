@@ -1,7 +1,3 @@
-// Validaciones de usuarios (express-validator).
-// Alineadas con la tabla usuario (backend/db/tp3.sql):
-// nombre VARCHAR(100), email VARCHAR(150) único, contrasena VARCHAR(255)
-// donde se guarda SOLO el hash de bcrypt.
 
 const { body } = require('express-validator');
 
@@ -16,8 +12,6 @@ const registrar = [
     .isEmail().withMessage('El email no tiene un formato válido.')
     .normalizeEmail()
     .isLength({ max: 150 }).withMessage('El email no puede superar los 150 caracteres.'),
-  // bcrypt solo procesa los primeros 72 bytes: se limita acá para que el
-  // límite no cambie silenciosamente el valor del hash.
   body('contrasena')
     .notEmpty().withMessage('La contraseña es obligatoria.')
     .isLength({ min: 8, max: 72 })

@@ -1,8 +1,3 @@
-// Rutas de la aplicación:
-// - "/" (Inicio): página pública.
-// - "/login": inicio de sesión y registro.
-// - "/vehiculos", "/conductores", "/viajes": pantallas de gestión protegidas
-//   (si no hay sesión, RequerirAuth redirige al login).
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
@@ -48,7 +43,6 @@ export default function App() {
                   </RequerirAuth>
                 }
               />
-              {/* Ruta desconocida: vuelve al inicio */}
               <Route path="*" element={<Inicio />} />
             </Routes>
           </main>

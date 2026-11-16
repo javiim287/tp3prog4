@@ -1,6 +1,3 @@
-// Envuelve las rutas protegidas: si no hay usuario logueado redirige al
-// login. Las rutas CRUD del backend exigen JWT, así que sin sesión no
-// tiene sentido mostrarlas.
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 

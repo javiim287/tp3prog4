@@ -1,6 +1,3 @@
-// Barra de navegación principal: enlaces a las pantallas de la aplicación
-// (Vehículos, Conductores, Viajes) con estado visual del enlace activo.
-// Muestra el usuario logueado y el botón "Salir", o el acceso al login.
 import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 

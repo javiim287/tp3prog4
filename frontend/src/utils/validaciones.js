@@ -1,8 +1,3 @@
-// Validaciones del lado del cliente (Módulo 7).
-// Espejan las reglas de express-validator del backend (backend/src/validators/)
-// para avisar al usuario antes de enviar datos inválidos; el backend revalida
-// todo igualmente. Cada validador devuelve un objeto { campo: mensaje } vacío
-// cuando los datos son correctos.
 
 const PATENTE_REGEX = /^([A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$/;
 const DOCUMENTO_REGEX = /^[0-9]{6,20}$/;
@@ -11,28 +6,21 @@ const SOLO_LETRAS_REGEX = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' -]+$/;
 const FECHA_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 const FECHA_HORA_REGEX = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 
-// Fecha DATE en formato YYYY-MM-DD (el input type="date" ya la entrega así).
 export const esFechaISO = (valor) =>
   typeof valor === 'string' &&
   FECHA_REGEX.test(valor) &&
   !Number.isNaN(new Date(`${valor}T00:00:00`).getTime());
 
-// Fecha y hora en el formato que espera el backend: "YYYY-MM-DD HH:MM:SS".
 export const esFechaHora = (valor) =>
   typeof valor === 'string' &&
   FECHA_HORA_REGEX.test(valor) &&
   !Number.isNaN(new Date(valor.replace(' ', 'T')).getTime());
 
-// Convierte el valor de un input datetime-local ("YYYY-MM-DDTHH:mm") al
-// formato del backend ("YYYY-MM-DD HH:MM:SS").
 export const aFechaHora = (valor) => (valor ? `${valor.replace('T', ' ')}:00` : '');
 
-// Recorta una fecha "YYYY-MM-DD HH:MM:SS" para mostrarla en tablas.
 export const formatearFechaHora = (valor) =>
   valor ? String(valor).replace('T', ' ').slice(0, 16) : '';
 
-// Convierte un texto a número tolerando la coma decimal; devuelve NaN si no es
-// un número válido.
 export const aNumero = (valor) => {
   if (typeof valor === 'number') return valor;
   const texto = String(valor ?? '').trim().replace(',', '.');
@@ -40,7 +28,6 @@ export const aNumero = (valor) => {
   return Number(texto);
 };
 
-/* ---------- Vehículos ---------- */
 
 export function validarVehiculo(valores) {
   const errores = {};
@@ -73,7 +60,6 @@ export function validarVehiculo(valores) {
   return errores;
 }
 
-/* ---------- Conductores ---------- */
 
 export function validarConductor(valores) {
   const errores = {};
@@ -121,7 +107,6 @@ export function validarConductor(valores) {
   return errores;
 }
 
-/* ---------- Viajes ---------- */
 
 export function validarViaje(valores) {
   const errores = {};
@@ -163,8 +148,6 @@ export function validarViaje(valores) {
   return errores;
 }
 
-// Convierte los errores del backend ([{ campo, mensaje }]) en el mismo formato
-// { campo: mensaje } que usan las validaciones locales.
 export function erroresPorCampo(erroresApi = []) {
   const porCampo = {};
   for (const e of erroresApi) {

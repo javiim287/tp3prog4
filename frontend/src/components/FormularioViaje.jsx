@@ -1,6 +1,3 @@
-// Formulario de registro de viajes (Módulo 7): asocia un vehículo y un
-// conductor con fechas, trayecto y kilómetros. Valida en el cliente con las
-// reglas de utils/validaciones.js y muestra los errores por campo del backend.
 import { useState } from 'react';
 import { pedir } from '../api/client';
 import { validarViaje, aFechaHora, aNumero, erroresPorCampo } from '../utils/validaciones';

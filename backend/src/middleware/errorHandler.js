@@ -1,11 +1,4 @@
-// Manejo central de errores: traduce los errores de la aplicación y de MySQL
-// a respuestas JSON consistentes con el código HTTP correspondiente.
-// Las validaciones de formato/rangos (express-validator) responden 400 desde
-// backend/src/validators/helpers.js antes de llegar a los controladores.
 
-// Error de aplicación con código HTTP asociado.
-// Los controladores lo lanzan (throw) y el middleware central lo convierte
-// en una respuesta JSON con el formato { ok: false, mensaje }.
 class HttpError extends Error {
   constructor(status, mensaje) {
     super(mensaje);
@@ -13,15 +6,12 @@ class HttpError extends Error {
   }
 }
 
-// Envuelve controladores async para que cualquier error llegue al middleware
-// central y ninguna promesa rechazada quede sin manejar.
 function asyncHandler(fn) {
   return (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
 }
 
-// Traduce los códigos de error conocidos de MySQL a HTTP + mensaje claro.
 function traducirErrorMySQL(error) {
   switch (error.code) {
     case 'ER_DUP_ENTRY':
@@ -55,8 +45,6 @@ function traducirErrorMySQL(error) {
   }
 }
 
-// Middleware central: responde siempre JSON con { ok: false, mensaje }.
-// eslint-disable-next-line no-unused-vars
 function errorHandler(error, _req, res, _next) {
   const traducido = traducirErrorMySQL(error);
   if (traducido) {
@@ -67,13 +55,10 @@ function errorHandler(error, _req, res, _next) {
     return res.status(error.status).json({ ok: false, mensaje: error.message });
   }
 
-  // Error inesperado: se registra en el servidor (sin datos sensibles) y se
-  // responde con un mensaje genérico para no filtrar detalles internos.
   console.error('Error no manejado:', error.message);
   return res.status(500).json({ ok: false, mensaje: 'Error interno del servidor.' });
 }
 
-// 404 para rutas de la API que no existen.
 function notFoundHandler(_req, res) {
   res.status(404).json({ ok: false, mensaje: 'Ruta no encontrada.' });
 }

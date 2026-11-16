@@ -1,6 +1,3 @@
-// Rutas de viajes: /api/viajes
-// Las rutas de obtención (historial, kilómetros) y el registro de viajes
-// pasan por su cadena de express-validator antes de llegar al controlador.
 const express = require('express');
 const controller = require('../controllers/tripController');
 const { requerirAuth } = require('../middleware/auth');
@@ -13,12 +10,9 @@ const tripValidators = require('../validators/tripValidators');
 
 const router = express.Router();
 
-// Todas las rutas de viajes requieren un JWT válido (Módulo 5)
 router.use(requerirAuth);
 
-// Las rutas de historial y kilómetros van antes que /:id para que no se
-// interpreten como un id de viaje.
-router.get('/kilometros', controller.kilometrosResumen); // resumen general
+router.get('/kilometros', controller.kilometrosResumen);
 router.get(
   '/kilometros/vehiculo/:vehiculoId',
   validarIdParam('vehiculoId'),
@@ -36,13 +30,13 @@ router.get(
   validarIdParam('vehiculoId'),
   validar,
   controller.historialPorVehiculo
-); // historial por vehículo
+);
 router.get(
   '/conductor/:conductorId',
   validarIdParam('conductorId'),
   validar,
   controller.historialPorConductor
-); // historial por conductor
+);
 
 router.get(
   '/',
@@ -50,8 +44,8 @@ router.get(
   validarQueryIdOpcional('conductorId'),
   validar,
   controller.listar
-); // listar todos (con filtros opcionales)
-router.get('/:id', validarIdParam('id'), validar, controller.obtener); // obtener por id
-router.post('/', tripValidators.crear, validar, controller.crear); // registrar viaje
+);
+router.get('/:id', validarIdParam('id'), validar, controller.obtener);
+router.post('/', tripValidators.crear, validar, controller.crear);
 
 module.exports = router;

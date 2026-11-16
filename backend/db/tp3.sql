@@ -1,25 +1,9 @@
--- ============================================================================
--- TP N.º 3 - Programación IV (UTN FR La Rioja)
--- Script de creación de la base de datos y de todas las tablas.
---
--- Uso manual:
---   mysql -u <usuario> -p < backend/db/tp3.sql
--- O desde la carpeta backend:
---   npm run db:init
---
--- El nombre de la base coincide con DB_NAME del archivo .env.example.
--- ============================================================================
 CREATE DATABASE IF NOT EXISTS tp3_vehiculos
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
 USE tp3_vehiculos;
 
--- ----------------------------------------------------------------------------
--- Tabla usuario: cuentas para registro e inicio de sesión.
--- contrasena se guarda SIEMPRE como hash de bcrypt (VARCHAR(255)), nunca en
--- texto plano.
--- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS usuario (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
@@ -31,10 +15,6 @@ CREATE TABLE IF NOT EXISTS usuario (
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
--- ----------------------------------------------------------------------------
--- Tabla vehiculo: flota de la empresa de transporte.
--- capacidad_carga se expresa en kilogramos (admite decimales).
--- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS vehiculo (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   marca VARCHAR(50) NOT NULL,
@@ -50,11 +30,6 @@ CREATE TABLE IF NOT EXISTS vehiculo (
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
--- ----------------------------------------------------------------------------
--- Tabla conductor: choferes de la empresa.
--- Documento y licencia son únicos; la licencia tiene fecha de alta y de
--- vencimiento (la validez se controla también en el backend).
--- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS conductor (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
@@ -71,11 +46,6 @@ CREATE TABLE IF NOT EXISTS conductor (
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
--- ----------------------------------------------------------------------------
--- Tabla viaje: cada viaje asocia un vehículo y un conductor (claves foráneas).
--- kilometros se usa para el cálculo de kilómetros totales por vehículo y por
--- conductor. observaciones es opcional.
--- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS viaje (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   vehiculo_id INT UNSIGNED NOT NULL,

@@ -1,6 +1,3 @@
-// Conexión a MySQL mediante mysql2 (pool de conexiones).
-// Los datos de conexión se toman de las variables de entorno definidas en el
-// archivo .env (ver .env.example). El esquema se crea ejecutando db/tp3.sql.
 const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
@@ -12,14 +9,10 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: Number(process.env.DB_CONNECTION_LIMIT) || 10,
   charset: 'utf8mb4_unicode_ci',
-  // Las fechas llegan como texto 'YYYY-MM-DD HH:MM:SS', sin conversiones de zona horaria
   dateStrings: true,
-  // DECIMAL llega como número de JavaScript (kilómetros, capacidad de carga)
   decimalNumbers: true,
 });
 
-// Verifica que el pool pueda obtener una conexión y responder un ping.
-// Se usa en el arranque del servidor y en /api/health.
 async function verificarConexion() {
   const connection = await pool.getConnection();
   try {

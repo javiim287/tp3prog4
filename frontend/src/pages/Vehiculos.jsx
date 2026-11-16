@@ -1,7 +1,3 @@
-// Pantalla de vehículos (Módulo 7): listado + alta, modificación y eliminación.
-// Las validaciones de formato se hacen en el cliente (utils/validaciones.js);
-// el backend revalida y puede devolver errores por campo o 409 de patente
-// duplicada / eliminación con viajes asociados.
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { pedir } from '../api/client';
@@ -23,7 +19,6 @@ export default function Vehiculos() {
   const [error, setError] = useState('');
   const [mensaje, setMensaje] = useState('');
 
-  // Formulario compartido entre alta (modo 'alta') y edición (modo 'editar').
   const [modo, setModo] = useState('oculto');
   const [editandoId, setEditandoId] = useState(null);
   const [valores, setValores] = useState(FORMULARIO_INICIAL);
@@ -38,7 +33,6 @@ export default function Vehiculos() {
       const respuesta = await pedir('/vehiculos');
       setVehiculos(respuesta.datos);
     } catch (e) {
-      // Un 401 ya disparó la redirección al login desde el cliente de API.
       if (e.estado !== 401) setError('No se pudo cargar el listado de vehículos.');
     } finally {
       setCargando(false);
@@ -132,7 +126,6 @@ export default function Vehiculos() {
       setMensaje('Vehículo eliminado correctamente.');
       await cargar();
     } catch (err) {
-      // 409: el backend avisa si el vehículo tiene viajes asociados (FK).
       if (err.estado !== 401) setError(err.mensaje || 'No se pudo eliminar el vehículo.');
     }
   }

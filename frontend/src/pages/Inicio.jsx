@@ -1,5 +1,3 @@
-// Página principal pública: presentación de la aplicación y accesos rápidos.
-// Es visible sin iniciar sesión; las pantallas de gestión sí requieren login.
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
