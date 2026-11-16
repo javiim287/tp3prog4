@@ -14,6 +14,7 @@ export class ApiError extends Error {
   constructor(mensaje, estado, errores = []) {
     super(mensaje);
     this.name = 'ApiError';
+    this.mensaje = mensaje; // mensaje en español del backend (o de red)
     this.estado = estado; // código HTTP (400, 401, 404, 409, 500...)
     this.errores = errores; // [{ campo, mensaje }] cuando la validación falla
   }

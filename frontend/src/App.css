@@ -345,3 +345,111 @@
 .tabla tbody tr:hover {
   background: #fafbfe;
 }
+
+/* Tablas dentro de tarjetas (kilómetros por vehículo / conductor). */
+.tabla--chica {
+  font-size: 0.9rem;
+}
+
+.tabla--chica th,
+.tabla--chica td {
+  padding: 8px 10px;
+}
+
+/* ---------- Secciones de gestión (Módulo 7) ---------- */
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.seccion h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.seccion__bajada {
+  margin: 0;
+  color: var(--color-texto-suave);
+  font-size: 0.95rem;
+}
+
+/* ---------- Formulario en grilla (varios campos por fila) ---------- */
+.formulario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0 16px;
+}
+
+.formulario-grid .campo--completo {
+  grid-column: 1 / -1;
+}
+
+.campo select,
+.campo textarea {
+  padding: 9px 12px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  font-size: 0.95rem;
+  background: #fff;
+  font-family: inherit;
+}
+
+.campo select:focus,
+.campo textarea:focus {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 1px;
+  border-color: var(--color-primario);
+}
+
+.campo textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+/* Filtros de búsqueda (historial) alineados en una fila. */
+.filtros {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 640px;
+}
+
+.filtros .campo {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* ---------- Acciones dentro de las tablas ---------- */
+.tabla__acciones {
+  white-space: nowrap;
+}
+
+.tabla__acciones .boton {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  margin-right: 6px;
+}
+
+.tabla__acciones .boton:last-child {
+  margin-right: 0;
+}
+
+.boton--peligroso {
+  background: var(--color-error);
+  color: #fff;
+}
+
+.boton--peligroso:hover:not(:disabled) {
+  background: #7f1d1d;
+}
+
+/* ---------- Resumen del historial ---------- */
+.historial__resumen {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radio);
+  background: var(--color-exito-fondo);
+  color: var(--color-exito);
+  font-weight: 600;
+}
